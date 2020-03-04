@@ -14,4 +14,5 @@ testWatch:
 	npx jest --watch
 lint:
 	npx eslint .
-	
+webpack:
+	npx webpack
