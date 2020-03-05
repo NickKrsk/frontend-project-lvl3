@@ -17,11 +17,17 @@
   },
   "homepage": "https://github.com/NickKrsk/frontend-project-lvl3#readme",
   "devDependencies": {
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.8.7",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.6",
+    "babel-preset-env": "^1.7.0",
     "html-webpack-plugin": "^3.2.0",
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11"
   },
   "dependencies": {
+    "bootstrap": "^4.4.1",
     "lodash": "^4.17.15"
   }
 }
