@@ -4,8 +4,6 @@ installBabel:
 	npm install --save-dev @babel/core @babel/cli @babel/node @babel/preset-env
 publish:
 	npm publish --dry-run
-start:
-	npx babel-node src/bin/gendiff.js '/home/nikita/frontend-project-lvl2/fixtures/before.json' '/home/nikita/frontend-project-lvl2/fixtures/after.json'
 link:
 	npm link
 test:
@@ -16,3 +14,12 @@ lint:
 	npx eslint .
 webpack:
 	npx webpack
+
+
+	  
+install: install-deps install-flow-typed
+develop:
+	npx webpack-dev-server
+build:
+	rm -rf dist
+	NODE_ENV=production npx webpack
