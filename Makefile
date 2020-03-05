@@ -1,3 +1,10 @@
+install: install-deps install-flow-typed
+develop:
+	npx webpack-dev-server
+build:
+	rm -rf dist
+	NODE_ENV=production npx webpack
+
 install-deps:
 	npm install
 installBabel:
@@ -14,12 +21,3 @@ lint:
 	npx eslint .
 webpack:
 	npx webpack
-
-
-	  
-install: install-deps install-flow-typed
-develop:
-	npx webpack-dev-server
-build:
-	rm -rf dist
-	NODE_ENV=production npx webpack
