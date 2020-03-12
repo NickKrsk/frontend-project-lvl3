@@ -1,7 +1,6 @@
-import init from './init';
+import app from './application.js';
 
-init();
-
+app();
 
 /*import _ from 'lodash';
 
