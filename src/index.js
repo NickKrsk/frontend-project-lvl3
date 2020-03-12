@@ -1,8 +1,15 @@
-import _ from 'lodash';
+import init from './init';
+
+init();
+
+
+/*import _ from 'lodash';
 
 function component() {
-    const element = document.createElement('div');
+    const form = document.querySelector('.RSS-form');
+    console.log(form);
 
+    const element = document.createElement('div');
     // Lodash, currently included via a script, is required for this line to work
     element.innerHTML = _.join(['Hello', 'webpack'], ' ');
   
@@ -10,3 +17,4 @@ function component() {
   }
   
   document.body.appendChild(component());
+  */
