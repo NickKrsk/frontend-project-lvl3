@@ -1,4 +1,8 @@
-import _ from 'lodash';
+import app from './application.js';
+
+app();
+
+/*import _ from 'lodash';
 
 const render = (state) => {
 
@@ -31,8 +35,10 @@ app();
 
 /*
 function component() {
-    const element = document.createElement('div');
+    const form = document.querySelector('.RSS-form');
+    console.log(form);
 
+    const element = document.createElement('div');
     // Lodash, currently included via a script, is required for this line to work
     element.innerHTML = _.join(['Hello', 'webpack'], ' ');
   
