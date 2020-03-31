@@ -20,11 +20,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: npm install, build
-
-      - name: npm install, build
         run: |
-          npm install
-          rm -rf dist
-          npx webpack
+          make install
+          make build
         env:
           CI: true
