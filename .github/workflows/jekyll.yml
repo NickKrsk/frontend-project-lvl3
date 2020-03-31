@@ -17,6 +17,6 @@ jobs:
       - name: npm install, build
         run: |
           npm install
-          make build
+          NODE_ENV=production npx webpack
         env:
           CI: true
