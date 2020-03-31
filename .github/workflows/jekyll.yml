@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: npm install, build
         run: |
-          make install-deps
+          npm install
           make build
         env:
           CI: true
