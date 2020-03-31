@@ -16,7 +16,8 @@ jobs:
     steps:
       - name: npm install, build
         run: |
-          ls
-         
+          npm install
+          rm -rf dist
+          npx webpack
         env:
           CI: true
