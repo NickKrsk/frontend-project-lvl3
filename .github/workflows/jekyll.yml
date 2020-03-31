@@ -16,6 +16,7 @@ jobs:
     steps:
       - name: npm install, build
         run: |
+          ls
           make install
           make build
         env:
