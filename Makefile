@@ -1,9 +1,6 @@
 install: 
 	npm install
 
-ls:
-	ls
-
 develop:
 	npx webpack-dev-server
 

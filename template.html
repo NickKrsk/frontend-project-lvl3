@@ -11,17 +11,30 @@
     <title>Webpack Package gdfgdfg</title>
   </head>
   <body>
-    <div class="jumbotron" id ="point" class="RSS-form">
+    <!-- Спиннер -->
+    <div class="spinner-grow text-success d-none" style="position: absolute; top: 30%; left: 50%; margin-top: -1.5rem; margin-left: -1.5rem; width: 3rem; height: 3rem;" role="status">
+     <span class="sr-only">Loading...</span>
+    </div>
+
+    <div class="jumbotron" id ="point" class="rss-form">
       <h1>RSS агрегатор</h1>
-      <form>
-        <div class="input-group input-group-lg">
-          <input type="text" class="form-control" name="RSS" placeholder="RSS">
-          <button type="submit" class="btn btn-primary">ADD</a>
+      <form data-form="add-rss-form">
+        <div class="input-group input-group-lg">         
+          <input id="input-rss" type="text" class="form-control" name="rss" placeholder="RSS">
+          <input type="submit" class="btn btn-primary" value="Add">                    
         </div>
       </form>
-    </div>
-    <div class="col-6">
-      <div class="result"></div>
+      <div class="feedback text-danger sr-only">this must be a valid URL</div>
+      <div class="container">
+        <div class="row">
+          <div class="col-6" id="result">
+            Фиды            
+          </div>
+          <div class="col-6" id="posts">
+            Посты
+          </div>
+        </div>  
+      </div>
     </div>
   </body>
 </html>
