@@ -1,6 +1,6 @@
 RSS агрегатор
 
-https://frontend-project-lvl3-82dongzjv.now.sh/
+frontend-project-lvl3.ggd43.now.sh
 
 Задеплоено на https://zeit.co
 

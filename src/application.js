@@ -95,7 +95,7 @@ const getStream = (state, url) => {
 };
 
 const findNewPosts = (state) => {
-  const updateCheckPeriod = 2000;
+  const updateCheckPeriod = 5000;
   const iter = () => {
     state.feeds.forEach(({ url }) => {
       getStream(state, url)
