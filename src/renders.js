@@ -1,5 +1,4 @@
 export const renderValidation = (submitButton, input, state) => {
-  // input.style.border = state.form.valid ? null : "thick solid red";
   if (state.form.valid) {
     input.classList.remove('is-invalid');
     submitButton.disabled = false;
