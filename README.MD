@@ -2,8 +2,9 @@ RSS агрегатор
 
 https://frontend-project-lvl3-4zugj3b45.now.sh
 
-<a href="https://codeclimate.com/github/NickKrsk/frontend-project-lvl3/maintainability"><img src="https://api.codeclimate.com/v1/badges/ae8d92bfef8afc83ce64/maintainability" /></a>
+[![Maintainability](https://api.codeclimate.com/v1/badges/ae8d92bfef8afc83ce64/maintainability)](https://codeclimate.com/github/NickKrsk/frontend-project-lvl3/maintainability)
 
+![Node CI](https://github.com/NickKrsk/frontend-project-lvl3/workflows/Node%20CI/badge.svg)
 
 
 
