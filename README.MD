@@ -2,6 +2,19 @@ RSS агрегатор
 
 https://frontend-project-lvl3-4zugj3b45.now.sh
 
+<a href="https://codeclimate.com/github/NickKrsk/frontend-project-lvl3/maintainability"><img src="https://api.codeclimate.com/v1/badges/ae8d92bfef8afc83ce64/maintainability" /></a>
+
+
+
+
+
+
+
+
+
+
+
+
 Задеплоено на https://zeit.co
 
 https://habr.com/ru/post/350886/
