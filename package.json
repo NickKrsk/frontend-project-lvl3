@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/NickKrsk/frontend-project-lvl3#readme",
   "devDependencies": {
+    "@babel/compat-data": "^7.9.0",
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
     "babel-core": "^6.26.3",
