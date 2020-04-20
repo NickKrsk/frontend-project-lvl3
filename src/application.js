@@ -12,7 +12,7 @@ import resources from './locales';
 const proxy = 'https://cors-anywhere.herokuapp.com';
 
 const schema = yup.object().shape({
-  rss: yup.string().required().min(5),
+  rss: yup.string().url().required().min(5),
 });
 
 const parseDocument = (doc) => {
