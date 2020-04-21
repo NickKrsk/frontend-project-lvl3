@@ -100,8 +100,8 @@ const findNewPosts = (state) => {
     state.feeds.forEach(({ url }) => {
       getStream(state, url)
         .then(({ posts }) => {
-          const predicate = (postLink) => _.find(state.posts, (post) => post.postLink === postLink);
-          const newPosts = posts.filter(({ postLink }) => !predicate(postLink));
+          const postIsFind = (postLink) => _.find(state.posts, (post) => post.postLink === postLink);
+          const newPosts = posts.filter(({ postLink }) => !postIsFind(postLink));
           state.posts = [...state.posts, ...newPosts];
         })
         .catch((error) => {
