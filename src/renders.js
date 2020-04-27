@@ -12,12 +12,14 @@ export const renderValidation = (submitButton, input, state) => {
 
 export const renderFeeds = (state) => {
   const feedsElement = document.getElementById('feeds');
-  feedsElement.innerHTML = `<ul>${state.feeds.map((feed) => `<li><b>${feed.title}</b>\n${feed.description}</li>`).join('')}</ul>`;
+  const renderFeed = (feed) => `<li><b>${feed.title}</b>\n${feed.description}</li>`;
+  feedsElement.innerHTML = `<ul>${state.feeds.map((feed) => renderFeed(feed)).join('')}</ul>`;
 };
 
 export const renderPosts = (state) => {
   const postsElement = document.getElementById('posts');
-  postsElement.innerHTML = `<ul>${state.posts.map((post) => `<li><a href=${post.postLink} target="_blank">${post.postTitle}</a></li>`).join('')}</ul>`;
+  const renderPost = (post) => `<li><a href=${post.postLink} target="_blank">${post.postTitle}</a></li>`;
+  postsElement.innerHTML = `<ul>${state.posts.map((post) => renderPost(post)).join('')}</ul>`;
 };
 
 export const renderSpinner = (state) => {

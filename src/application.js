@@ -8,25 +8,46 @@ import {
   renderValidation, renderFeeds, renderPosts, renderSpinner, renderErrors,
 } from './renders';
 import resources from './locales';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const proxy = 'https://cors-anywhere.herokuapp.com';
 
-const schema = yup.object().shape({
-  rss: yup.string().url().required().min(5),
-});
+const updateValidationState = (state) => {
+  const schema = yup.object().shape({
+    rss: yup.string().url().required().min(5).test('RSS already exist', 'RSS already exist',
+      (value) => {
+        if (_.find(state.feeds, ({ url }) => url === value)) {
+          return false;
+        }
+        return true;
+      }),
+  });
 
-const parseDocument = (doc) => {
+  try {
+    schema.validateSync(state.form.fields, { abortEarly: false });
+    state.form.valid = true;
+    state.form.errors = [];
+  } catch (e) {
+    // const errors = _.keyBy(e.inner, 'path');
+    const { errors } = e;
+    state.form.errors = [{
+      name: errors.toString(),
+    }];
+    state.form.valid = false;
+  }
+};
+
+const parseRSS = (data) => {
+  const domparser = new DOMParser();
+  const doc = domparser.parseFromString(data, 'text/xml');
   const channel = doc.querySelector('channel');
-  // console.log(channel);
   const title = channel.querySelector('title').innerHTML;
   const description = channel.querySelector('description').innerHTML;
 
   const posts = [];
 
   const items = channel.querySelectorAll('item');
-  // console.log(items);
   items.forEach((item) => {
-    // console.log(item);
     const postTitle = item.querySelector('title').textContent;// innerHTML;
     const postDescription = item.querySelector('description').textContent;// innerHTML;
     const postLink = item.querySelector('link').innerHTML;
@@ -44,41 +65,15 @@ const parseDocument = (doc) => {
   };
 };
 
-const updateValidationState = (state) => {
-  if (_.find(state.feeds, (el) => el.url === state.form.fields.rss)) {
-    state.form.valid = false;
-    state.form.errors = [{
-      name: 'RSS already exist',
-    }];
-    return;
-  }
-
-  try {
-    schema.validateSync(state.form.fields, { abortEarly: false });
-    state.form.valid = true;
-    state.form.errors = [];
-  } catch (e) {
-    // const errors = _.keyBy(e.inner, 'path');
-    const { errors } = e;
-    state.form.errors = [{
-      name: errors.toString(),
-    }];
-    state.form.valid = false;
-  }
-};
-
 const getStream = (state, url) => {
   // http://lorem-rss.herokuapp.com/feed
   // https://ru.hexlet.io/lessons.rss
   // http://static.feed.rbc.ru/rbc/logical/footer/news.rss
 
   const proxyUrl = `${proxy}/${url}`;
-
   return axios.get(proxyUrl)
     .then((response) => {
-      const domparser = new DOMParser();
-      const doc = domparser.parseFromString(response.data, 'text/xml');
-      const { title, description, posts } = parseDocument(doc);
+      const { title, description, posts } = parseRSS(response.data);
       return {
         url,
         title,
@@ -87,10 +82,7 @@ const getStream = (state, url) => {
       };
     })
     .catch((error) => {
-      state.form.errors = [{
-        name: error,
-      }];
-      state.form.processState = 'filling';
+      throw error;// пробрасываем дальше
     });
 };
 
@@ -102,16 +94,16 @@ const findNewPosts = (state) => {
         .then(({ posts }) => {
           const postIsFind = (postLink) => _.find(state.posts, (post) => post.postLink === postLink);
           const newPosts = posts.filter(({ postLink }) => !postIsFind(postLink));
-          state.posts = [...state.posts, ...newPosts];
+          state.posts.unshift(...newPosts);
         })
         .catch((error) => {
-          state.form.errors = [{
-            name: error,
-          }];
+          console.log(error);
         });
     });
     setTimeout(iter, updateCheckPeriod);
   };
+  // - Вопрос на засыпку, как часто будет вызываться функция iter?
+  // - 5c, по замерам также вышло
   iter();
 };
 
@@ -145,9 +137,7 @@ export default () => {
       input.placeholder = i18next.t('input.placeholder');
     })
     .catch((error) => {
-      state.form.errors = [{
-        name: error,
-      }];
+      console.log(error);
     });
 
   input.addEventListener('keyup', () => {
@@ -169,11 +159,18 @@ export default () => {
           title,
           description,
         });
-        state.posts = [...state.posts, ...posts];
+        state.posts.unshift(...posts);// push проще, а еще лучше unshift state.posts = [...state.posts, ...posts];
         state.form.processState = 'filling';
+        input.value = '';
+        state.form.valid = false;
+      })
+      .catch((error) => {
+        state.form.processState = 'filling';
+        console.log(error);
+        state.form.errors = [{
+          name: error,//'network error',
+        }];
       });
-    input.value = '';
-    state.form.valid = false;
   });
 
   watch(state.form, 'valid', () => renderValidation(submitButton, input, state));

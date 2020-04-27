@@ -7,6 +7,8 @@ https://frontend-project-lvl3-4zugj3b45.now.sh
 ![Node CI](https://github.com/NickKrsk/frontend-project-lvl3/workflows/Node%20CI/badge.svg)
 
 
+[Yup](https://medium.com/@arkadyt/how-does-yup-addmethod-work-creating-custom-validation-functions-with-yup-8fddb71a5470)
+
 
 
 
