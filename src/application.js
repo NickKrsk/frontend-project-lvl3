@@ -14,13 +14,14 @@ const proxy = 'https://cors-anywhere.herokuapp.com';
 
 const updateValidationState = (state) => {
   const schema = yup.object().shape({
-    rss: yup.string().url().required().min(5).test('RSS already exist', 'RSS already exist',
-      (value) => {
-        if (_.find(state.feeds, ({ url }) => url === value)) {
-          return false;
-        }
-        return true;
-      }),
+    rss: yup.string().url().required().min(5)
+      .test('RSS already exist', 'RSS already exist',
+        (value) => {
+          if (_.find(state.feeds, ({ url }) => url === value)) {
+            return false;
+          }
+          return true;
+        }),
   });
 
   try {
@@ -168,7 +169,7 @@ export default () => {
         state.form.processState = 'filling';
         console.log(error);
         state.form.errors = [{
-          name: error,//'network error',
+          name: error, // 'network error',
         }];
       });
   });
