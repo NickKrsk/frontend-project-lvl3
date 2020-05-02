@@ -13,15 +13,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const proxy = 'https://cors-anywhere.herokuapp.com';
 
 const updateValidationState = (state) => {
+  const urls = state.feeds.map(({ url }) => url);
   const schema = yup.object().shape({
     rss: yup.string().url().required().min(5)
-      .test('RSS already exist', 'RSS already exist',
-        (value) => {
-          if (_.find(state.feeds, ({ url }) => url === value)) {
-            return false;
-          }
-          return true;
-        }),
+      .notOneOf(urls, 'RSS already exist'),
   });
 
   try {
@@ -66,7 +61,7 @@ const parseRSS = (data) => {
   };
 };
 
-const getStream = (state, url) => {
+const getStream = (url) => {
   // http://lorem-rss.herokuapp.com/feed
   // https://ru.hexlet.io/lessons.rss
   // http://static.feed.rbc.ru/rbc/logical/footer/news.rss
@@ -81,30 +76,28 @@ const getStream = (state, url) => {
         description,
         posts,
       };
-    })
-    .catch((error) => {
-      throw error;// пробрасываем дальше
     });
 };
 
 const findNewPosts = (state) => {
   const updateCheckPeriod = 5000;
   const iter = () => {
-    state.feeds.forEach(({ url }) => {
-      getStream(state, url)
-        .then(({ posts }) => {
-          const postIsFind = (postLink) => _.find(state.posts, (post) => post.postLink === postLink);
-          const newPosts = posts.filter(({ postLink }) => !postIsFind(postLink));
-          state.posts.unshift(...newPosts);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    const promise = new Promise(() => {
+      state.feeds.forEach(({ url }) => {
+        getStream(url)
+          .then(({ posts }) => {
+            const postIsFind = (postLink) => _.find(state.posts, (post) => post.postLink === postLink);
+            const newPosts = posts.filter(({ postLink }) => !postIsFind(postLink));
+            state.posts.unshift(...newPosts);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      });
     });
-    setTimeout(iter, updateCheckPeriod);
+    promise.then(setTimeout(iter, updateCheckPeriod));
   };
   // - Вопрос на засыпку, как часто будет вызываться функция iter?
-  // - 5c, по замерам также вышло
   iter();
 };
 
@@ -152,7 +145,7 @@ export default () => {
     const url = formData.get('rss');
 
     state.form.processState = 'processing';
-    getStream(state, url)
+    getStream(url)
       .then(({ title, description, posts }) => {
         state.feeds.push({
           id: uniqid(),
