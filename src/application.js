@@ -63,6 +63,7 @@ const parseRSS = (data) => {
 
 const getStream = (url) => {
   // http://lorem-rss.herokuapp.com/feed
+  //  http://lorem-rss.herokuapp.com/feed?unit=second&interval=1
   // https://ru.hexlet.io/lessons.rss
   // http://static.feed.rbc.ru/rbc/logical/footer/news.rss
 
@@ -82,6 +83,18 @@ const getStream = (url) => {
 const findNewPosts = (state) => {
   const updateCheckPeriod = 5000;
   const iter = () => {
+    const promises = state.feeds.map(({ url }) => getStream(url));
+    const promise = Promise.all(promises);
+    promise.then(result => {
+      result.map(({ posts }) => {
+        console.log(posts);
+        const postIsFind = (postLink) => _.find(state.posts, (post) => post.postLink === postLink);
+        const newPosts = posts.filter(({ postLink }) => !postIsFind(postLink));
+        state.posts.unshift(...newPosts);
+      });
+    })
+    .finally(() => setTimeout(iter, updateCheckPeriod));
+  /*  
     const promise = new Promise(() => {
       state.feeds.forEach(({ url }) => {
         getStream(url)
@@ -95,7 +108,9 @@ const findNewPosts = (state) => {
           });
       });
     });
-    promise.then(setTimeout(iter, updateCheckPeriod));
+
+
+    promise.then(setTimeout(iter, updateCheckPeriod));*/
   };
   // - Вопрос на засыпку, как часто будет вызываться функция iter?
   iter();
