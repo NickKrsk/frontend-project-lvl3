@@ -85,32 +85,14 @@ const findNewPosts = (state) => {
   const iter = () => {
     const promises = state.feeds.map(({ url }) => getStream(url));
     const promise = Promise.all(promises);
-    promise.then(result => {
-      result.map(({ posts }) => {
-        console.log(posts);
+    promise.then((result) => {
+      result.forEach(({ posts }) => {
         const postIsFind = (postLink) => _.find(state.posts, (post) => post.postLink === postLink);
         const newPosts = posts.filter(({ postLink }) => !postIsFind(postLink));
         state.posts.unshift(...newPosts);
       });
     })
-    .finally(() => setTimeout(iter, updateCheckPeriod));
-  /*  
-    const promise = new Promise(() => {
-      state.feeds.forEach(({ url }) => {
-        getStream(url)
-          .then(({ posts }) => {
-            const postIsFind = (postLink) => _.find(state.posts, (post) => post.postLink === postLink);
-            const newPosts = posts.filter(({ postLink }) => !postIsFind(postLink));
-            state.posts.unshift(...newPosts);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
-    });
-
-
-    promise.then(setTimeout(iter, updateCheckPeriod));*/
+      .finally(() => setTimeout(iter, updateCheckPeriod));
   };
   // - Вопрос на засыпку, как часто будет вызываться функция iter?
   iter();
